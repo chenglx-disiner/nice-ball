@@ -1,0 +1,1040 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
+    <title>NICE BALL | 数字更衣室</title>
+<meta name="theme-color" content="#000000">
+<meta name="description" content="NICE BALL 数字更衣室：球衣设计、灵感社区和球队协作交互演示。">
+<link rel="icon" href="image_ebce1a.jpg" type="image/png">
+    <script src="assets/tailwind.js"></script>
+    
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'acid-black': '#000000',
+                        'acid-gray': '#1C1C1E',
+                        'acid-lime': '#CCFF00',
+                        'acid-purple': '#9D4EDD',
+                    },
+                    fontFamily: {
+                        'sans': ['Noto Sans SC', '-apple-system', 'sans-serif'],
+                        'mono': ['Space Mono', 'monospace'],
+                    },
+                    boxShadow: {
+                        'neon': '0 0 12px rgba(204, 255, 0, 0.4)',
+                        'float': '0 -10px 40px rgba(0, 0, 0, 0.8)',
+                    },
+                    animation: {
+                        'slide-up': 'slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                        'fade-in': 'fadeIn 0.3s ease-out forwards',
+                    },
+                    keyframes: {
+                        slideUp: {
+                            '0%': { transform: 'translateY(100%)' },
+                            '100%': { transform: 'translateY(0)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #050505;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* Hide Scrollbar */
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Glass Navigation */
+        .glass-nav {
+            background: rgba(20, 20, 20, 0.92);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border-top: 0.5px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Dynamic Island */
+        .dynamic-island {
+            position: absolute;
+            top: 11px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 35px;
+            background: black;
+            border-radius: 20px;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        /* Rhombus Button */
+        .rhombus-btn {
+            width: 54px;
+            height: 54px;
+            background-color: #CCFF00;
+            border-radius: 16px;
+            transform: rotate(45deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(204, 255, 0, 0.3);
+            border: 3px solid #000;
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            cursor: pointer;
+        }
+        .rhombus-btn:active {
+            transform: rotate(45deg) scale(0.9);
+        }
+        .rhombus-icon {
+            transform: rotate(-45deg);
+            color: #000;
+            font-size: 32px;
+        }
+
+        /* Masonry Grid */
+        .masonry-grid {
+            column-count: 2;
+            column-gap: 12px;
+        }
+        .masonry-item {
+            break-inside: avoid;
+            page-break-inside: avoid;
+            margin-bottom: 12px;
+            transform: translateZ(0);
+        }
+
+        /* Content Padding for Bottom Nav */
+        .scroll-content {
+            padding-bottom: 120px;
+        }
+
+        .bg-grid-pattern {
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        /* Download Source Button (Utility) */
+        .download-source-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #CCFF00;
+            color: black;
+            padding: 12px 24px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-family: 'Space Mono', monospace;
+            cursor: pointer;
+            box-shadow: 0 0 30px rgba(204, 255, 0, 0.3);
+            transition: all 0.2s ease;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border: 2px solid white;
+        }
+        .download-source-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 40px rgba(204, 255, 0, 0.5);
+        }
+        .download-source-btn:active {
+            transform: scale(0.95);
+        }
+        
+        @media (max-width: 640px) {
+            .download-source-btn {
+                display: none; /* Hide on actual mobile devices if viewed directly, kept for desktop preview */
+            }
+        }
+    </style>
+<style id="dyn-img-link-styles-di-script">
+      .dyn-img-link-wrapper-di-script {
+        anchor-scope: all;
+        display: contents;
+        position: relative;
+        z-index: 1;
+      }
+
+      .dyn-img-link-wrapper-di-script img {
+        anchor-name: --photo;
+        display: block;
+        max-width: 100%;
+      }
+
+      .dyn-img-link-di-script {
+        z-index: 999999;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 9999px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        color: white;
+        height: clamp(13px, calc(max(anchor-size(width), anchor-size(height)) * 0.3), 21px);
+        width: clamp(13px, calc(max(anchor-size(width), anchor-size(height)) * 0.3), 21px);
+        padding: 4px;
+        position: absolute;
+
+        bottom: anchor(bottom);
+        left: anchor(left);
+        margin-left: 10px;
+        margin-bottom: 10px;
+
+        transition: background-color 0.2s ease-in-out;
+      }
+
+      .dyn-img-link-di-script:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      .dyn-img-link-di-script span {
+        font-size: 14px;
+        vertical-align: top;
+      }
+
+      .dyn-img-attribution-button-di-script {
+        z-index: 999999;
+        background-color: rgba(0, 0, 0, 0.5);
+        border-radius: 9999px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        color: white;
+        width: clamp(13px, calc(max(anchor-size(width), anchor-size(height)) * 0.3), 21px);
+        height: clamp(13px, calc(max(anchor-size(width), anchor-size(height)) * 0.3), 21px);
+        padding: 4px;
+
+        position: absolute;
+        position-anchor: --photo;
+        top: anchor(top);
+        right: anchor(right);
+        margin-top: 10px;
+        margin-right: 10px;
+
+        transition: background-color 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .dyn-img-attribution-button-di-script:hover {
+        background-color: rgba(0, 0, 0, 0.8);
+      }
+
+      .dyn-img-attribution-button-di-script span {
+        font-size: 14px;
+        vertical-align: top;
+      }
+
+      .dyn-img-inline-attribution-di-script {
+        z-index: 999999;
+        font-size: 12px;
+        padding: 4px;
+        display: none;
+
+        position: absolute;
+        position-anchor: --photo;
+        bottom: anchor(bottom);
+        right: anchor(right);
+        margin-bottom: 8px;
+        margin-right: 8px;
+
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        text-align: right;
+
+        white-space: nowrap;
+        background-color: rgba(0, 0, 0, 0.8);
+        border-radius: 9999px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        color: white;
+      }
+    </style><link rel="stylesheet" href="assets/fonts.css"><link rel="stylesheet" href="features.css"></head>
+<body>
+
+    <!-- Download Trigger for Deployment -->
+    <button class="download-source-btn" onclick="downloadSourceFile()" style="display: none;">
+        <span class="material-symbols-outlined">download</span>
+        下载 HTML 源码
+    </button>
+
+    <!-- iPhone 14 Pro Frame -->
+    <div id="phone-frame" class="relative w-[393px] h-[852px] bg-acid-black rounded-[55px] border-[8px] border-[#222] overflow-hidden flex flex-col shadow-2xl ring-1 ring-white/10">
+        <!-- Dynamic Island -->
+        <div class="dynamic-island"></div>
+        
+        <!-- Status Bar -->
+        <div class="h-[54px] w-full flex justify-between items-center px-8 pt-3 text-white text-[15px] font-semibold z-50 absolute top-0 pointer-events-none mix-blend-difference">
+            <span class="font-mono tracking-tight ml-2">9:41</span>
+            <div class="flex gap-1.5 items-center mr-2">
+                <span class="material-symbols-outlined text-[18px]">signal_cellular_alt</span>
+                <span class="material-symbols-outlined text-[18px]">wifi</span>
+                <span class="material-symbols-outlined text-[20px]">battery_full</span>
+            </div>
+        </div>
+
+        <!-- App Viewport -->
+        <main class="flex-1 overflow-y-auto no-scrollbar relative bg-acid-black bg-grid-pattern z-0 pt-[54px]" id="app-view" style="opacity: 1;">
+                <div class="h-full flex flex-col justify-center px-8 relative overflow-hidden bg-acid-black animate-fade-in">
+                    <div class="absolute -top-32 -left-32 w-80 h-80 bg-acid-purple rounded-full mix-blend-screen filter blur-[100px] opacity-20 animate-pulse"></div>
+                    <div class="relative z-10 flex flex-col items-center mb-16">
+                        <div class="w-32 h-32 mb-6 relative"><div class="w-full h-full flex items-center justify-center border-4 border-white transform rotate-45 rounded-[20px] shadow-neon"><span class="material-symbols-outlined text-5xl text-acid-lime transform -rotate-45">sports_basketball</span></div></div>
+                        <h1 class="text-[40px] font-black italic tracking-tighter text-white mb-2 leading-none">NICE BALL<span class="text-acid-lime">.</span></h1>
+                        <p class="text-[10px] font-mono text-gray-400 tracking-[0.4em] uppercase">数字更衣室 V2.1</p>
+                    </div>
+                    <div class="space-y-4 z-10 w-full">
+                        <div class="bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 flex items-center gap-4 focus-within:border-acid-lime transition-colors">
+                            <span class="font-mono font-bold text-acid-lime text-sm">+86</span>
+                            <input type="tel" id="login-phone" placeholder="请输入手机号" class="bg-transparent border-none outline-none text-white w-full placeholder-gray-600 font-mono text-sm h-6">
+                        </div>
+                        <div class="bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 flex items-center justify-between focus-within:border-acid-lime transition-colors">
+                            <input type="text" id="login-code" placeholder="验证码" class="bg-transparent border-none outline-none text-white w-full placeholder-gray-600 font-mono text-sm h-6">
+                            <button class="text-[11px] font-bold text-acid-lime opacity-80 hover:opacity-100">获取</button>
+                        </div>
+                        <button onclick="router.navigate('home')" class="w-full bg-acid-lime text-black font-black italic py-4 mt-6 rounded-2xl shadow-[0_4px_0_#9cb300] active:translate-y-1 active:shadow-none transition-all uppercase tracking-widest text-[16px] flex justify-center items-center gap-2 group">
+                            <span>立即进入</span>
+                            <span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+            </main>
+
+        <!-- Bottom Navigation Bar -->
+        <nav class="absolute bottom-0 left-0 right-0 h-[92px] glass-nav flex justify-between items-start pt-3 px-6 z-40 transition-transform duration-300 ease-in-out transform translate-y-0" id="bottom-nav" style="transform: translateY(100%);">
+            <!-- Left Tabs -->
+            <button class="nav-btn w-14 flex flex-col items-center gap-0.5 text-gray-500 transition-colors active:scale-95 group" data-target="home" onclick="router.navigate('home')">
+                <span class="material-symbols-outlined text-[26px] group-hover:text-white transition-colors">grid_view</span>
+                <span class="text-[10px] font-medium group-hover:text-white">首页</span>
+            </button>
+            <button class="nav-btn w-14 flex flex-col items-center gap-0.5 text-gray-500 transition-colors active:scale-95 group" data-target="collab" onclick="router.navigate('collab')">
+                <span class="material-symbols-outlined text-[26px] group-hover:text-white transition-colors">groups</span>
+                <span class="text-[10px] font-medium group-hover:text-white">协作</span>
+            </button>
+            
+            <!-- Center Floating Button -->
+            <div class="relative -top-10 w-14 h-14 flex items-center justify-center pointer-events-none">
+                <button class="rhombus-btn pointer-events-auto" onclick="router.navigate('creationMenu')">
+                    <span class="material-symbols-outlined rhombus-icon">add</span>
+                </button>
+            </div>
+            
+            <!-- Right Tabs -->
+            <button class="nav-btn w-14 flex flex-col items-center gap-0.5 text-gray-500 transition-colors active:scale-95 group" data-target="messages" onclick="router.navigate('messages')">
+                <span class="material-symbols-outlined text-[26px] group-hover:text-white transition-colors">forum</span>
+                <span class="text-[10px] font-medium group-hover:text-white">消息</span>
+            </button>
+            <button class="nav-btn w-14 flex flex-col items-center gap-0.5 text-gray-500 transition-colors active:scale-95 group" data-target="profile" onclick="router.navigate('profile')">
+                <span class="material-symbols-outlined text-[26px] group-hover:text-white transition-colors">fingerprint</span>
+                <span class="text-[10px] font-medium group-hover:text-white">我的</span>
+            </button>
+        </nav>
+
+        <!-- Toast Layer -->
+        <div class="absolute top-[60px] left-0 right-0 flex justify-center pointer-events-none z-[100]" id="toast-container"></div>
+        
+        <!-- Safe Area Indicator -->
+        <div class="absolute bottom-2 left-1/2 -translate-x-1/2 w-[138px] h-[5px] bg-white/30 rounded-full z-[100] pointer-events-none"></div>
+    </div>
+
+    <script>
+        // --- Data & State ---
+        const state = {
+            currentHomeTab: 'recommend', 
+            user: { name: '设计师_X', id: 'NICE-888' },
+            recommendPosts: [
+                { id: 1, title: '复古球衣穿搭', subtitle: 'RETRO FIT', type: 'img', likes: 328, 
+                  img: 'assets/1765264647584.jpg' },
+                { id: 2, title: '2025 趋势', subtitle: 'TRENDS', type: 'text', likes: '1.2k', bg: 'bg-acid-lime', text: 'FUTURE\nTRENDS' },
+                { id: 3, title: '赛博球场', subtitle: 'CYBER COURT', type: 'img', likes: 899, 
+                  img: 'assets/1765264645664.jpg' },
+                { id: 4, title: '战术板 UI', subtitle: 'TACTICAL', type: 'img', likes: 500, 
+                  img: 'assets/1765264656469.jpg' }
+            ],
+            inspirationPosts: [
+                { id: 101, title: '手绘草稿 #01', subtitle: 'SKETCH', likes: 55, img: 'assets/1765264651401.jpg' },
+                { id: 102, title: '矢量版型库', subtitle: 'VECTOR', likes: 200, img: 'assets/1765264641079.jpg' },
+                { id: 103, title: '网眼纹理', subtitle: 'TEXTURE', likes: 89, img: 'assets/1765264653321.jpg' },
+                { id: 104, title: '大师设计手稿', subtitle: 'ARCHIVE', likes: 999, img: 'assets/1765264654621.jpg' },
+            ],
+            templates: [
+                { id: 't1', name: '经典 V 领', tags: ['复古', '篮球'], img: 'assets/1765264660095.jpg' },
+                { id: 't2', name: '圆领紧身', tags: ['现代', '训练'], img: 'assets/1765264658736.jpg' },
+                { id: 't3', name: '连帽投篮服', tags: ['热身', '休闲'], img: 'assets/1765264661634.jpg' },
+            ]
+        };
+
+        // --- Router Engine ---
+        const router = {
+            navigate: (viewName, params = {}) => {
+                const appView = document.getElementById('app-view');
+                const bottomNav = document.getElementById('bottom-nav');
+                
+                if (viewName === 'home') {
+                    if(params.tab) state.currentHomeTab = params.tab;
+                    else if(!state.currentHomeTab) state.currentHomeTab = 'recommend';
+                }
+
+                const hideNavViews = ['login', 'creationMenu', 'aiDesign', 'templateList', 'templateDetail', 'detail'];
+                
+                // Nav visibility logic
+                if (hideNavViews.includes(viewName)) {
+                    bottomNav.style.transform = 'translateY(100%)';
+                } else {
+                    bottomNav.style.transform = 'translateY(0)';
+                    updateActiveNav(viewName);
+                }
+
+                appView.style.opacity = '0';
+                router.pending = setTimeout(() => {
+                    appView.innerHTML = views[viewName](params);
+                    nbAfterRender(viewName, params);
+                    appView.scrollTop = 0;
+                    appView.style.opacity = '1';
+                    
+                    if(appView.firstElementChild) {
+                        appView.firstElementChild.classList.add('animate-fade-in');
+                    }
+                }, 150);
+            }
+        };
+
+        const updateActiveNav = (viewName) => {
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                const target = btn.dataset.target;
+                const icon = btn.querySelector('.material-symbols-outlined');
+                
+                if (target === viewName) {
+                    btn.classList.remove('text-gray-500');
+                    btn.classList.add('text-acid-lime');
+                    icon.classList.add('fill-current'); 
+                } else {
+                    btn.classList.add('text-gray-500');
+                    btn.classList.remove('text-acid-lime');
+                    icon.classList.remove('fill-current');
+                }
+            });
+        };
+
+        const showToast = (msg, type='success') => {
+            const c = document.getElementById('toast-container');
+            const t = document.createElement('div');
+            t.className = `px-6 py-3 bg-[#1C1C1E]/95 backdrop-blur-xl border border-white/10 rounded-full shadow-2xl flex items-center gap-3 animate-slide-up`;
+            t.innerHTML = `
+                <span class="material-symbols-outlined text-[20px] ${type === 'success' ? 'text-acid-lime' : 'text-red-500'}">${type === 'success' ? 'check_circle' : 'error'}</span>
+                <span class="text-[13px] font-bold text-white tracking-wide">${msg}</span>
+            `;
+            c.appendChild(t);
+            setTimeout(() => {
+                t.style.opacity = '0';
+                t.style.transform = 'translateY(-20px)';
+                setTimeout(() => t.remove(), 300);
+            }, 2000);
+        };
+
+        // --- File Download Logic ---
+        function downloadSourceFile() {
+            // Get the entire HTML content of the current document
+            // We need to remove the download button itself from the exported code to make it clean
+            const btn = document.querySelector('.download-source-btn');
+            const originalDisplay = btn.style.display;
+            btn.style.display = 'none';
+            
+            const htmlContent = document.documentElement.outerHTML;
+            
+            // Restore button
+            btn.style.display = originalDisplay;
+
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'nice-ball-app.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // --- Views ---
+        const views = {
+            login: () => `
+                <div class="h-full flex flex-col justify-center px-8 relative overflow-hidden bg-acid-black">
+                    <div class="absolute -top-32 -left-32 w-80 h-80 bg-acid-purple rounded-full mix-blend-screen filter blur-[100px] opacity-20 animate-pulse"></div>
+                    <div class="relative z-10 flex flex-col items-center mb-16">
+                        <div class="w-32 h-32 mb-6 relative">
+                            <!-- Logo Image Replacement -->
+                            <img src="image_ebce1a.jpg" class="w-full h-full object-contain drop-shadow-lg transform -rotate-6" alt="NICE BALL Logo" onerror="this.parentElement.innerHTML='<div class=\\'w-full h-full flex items-center justify-center border-4 border-white transform rotate-45 rounded-[20px] shadow-neon\\'><span class=\\'material-symbols-outlined text-5xl text-acid-lime transform -rotate-45\\'>sports_basketball</span></div>'">
+                        </div>
+                        <h1 class="text-[40px] font-black italic tracking-tighter text-white mb-2 leading-none">NICE BALL<span class="text-acid-lime">.</span></h1>
+                        <p class="text-[10px] font-mono text-gray-400 tracking-[0.4em] uppercase">数字更衣室 V2.1</p>
+                    </div>
+                    <div class="space-y-4 z-10 w-full">
+                        <div class="bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 flex items-center gap-4 focus-within:border-acid-lime transition-colors">
+                            <span class="font-mono font-bold text-acid-lime text-sm">+86</span>
+                            <input type="tel" id="login-phone" placeholder="请输入手机号" class="bg-transparent border-none outline-none text-white w-full placeholder-gray-600 font-mono text-sm h-6">
+                        </div>
+                        <div class="bg-white/5 border border-white/10 rounded-2xl px-4 py-3.5 flex items-center justify-between focus-within:border-acid-lime transition-colors">
+                            <input type="text" id="login-code" placeholder="验证码" class="bg-transparent border-none outline-none text-white w-full placeholder-gray-600 font-mono text-sm h-6">
+                            <button class="text-[11px] font-bold text-acid-lime opacity-80 hover:opacity-100">获取</button>
+                        </div>
+                        <button onclick="router.navigate('home')" class="w-full bg-acid-lime text-black font-black italic py-4 mt-6 rounded-2xl shadow-[0_4px_0_#9cb300] active:translate-y-1 active:shadow-none transition-all uppercase tracking-widest text-[16px] flex justify-center items-center gap-2 group">
+                            <span>立即进入</span>
+                            <span class="material-symbols-outlined text-[20px] group-hover:translate-x-1 transition-transform">arrow_forward</span>
+                        </button>
+                    </div>
+                </div>
+            `,
+
+            home: () => `
+                <div class="h-full flex flex-col">
+                    <div class="px-5 pt-2 pb-3 sticky top-0 z-30 bg-acid-black/95 backdrop-blur-md border-b border-white/5">
+                         <div class="flex items-center justify-between mb-4">
+                             <div class="flex items-center gap-2">
+                                <span class="font-black italic text-[22px] text-white tracking-tight">NICE</span>
+                                <span class="text-[9px] font-mono text-acid-lime border border-acid-lime px-1.5 rounded-sm">BETA</span>
+                            </div>
+                            <div class="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center border border-white/10">
+                                <span class="material-symbols-outlined text-white text-[18px]">person</span>
+                            </div>
+                        </div>
+                        <div class="relative w-full">
+                            <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-[18px]">search</span>
+                            <input type="text" placeholder="搜索球衣、灵感..." class="w-full bg-[#1C1C1E] border border-white/10 rounded-xl py-2 pl-9 pr-4 text-white text-xs outline-none focus:border-acid-lime/50 transition-colors placeholder-gray-600">
+                        </div>
+                    </div>
+
+                    <div class="flex-1 overflow-y-auto mt-2 scroll-content relative no-scrollbar pb-32">
+                        <div class="flex gap-3 overflow-x-auto px-4 pb-4 no-scrollbar sticky top-0 z-20 bg-acid-black/50 backdrop-blur-sm pt-2">
+                             <button onclick="router.navigate('home', {tab:'recommend'})" 
+                                class="whitespace-nowrap px-5 py-1.5 rounded-full text-[12px] font-bold border transition-all ${state.currentHomeTab === 'recommend' ? 'bg-acid-lime text-black border-acid-lime shadow-[0_0_10px_rgba(204,255,0,0.3)]' : 'bg-[#1C1C1E] text-gray-400 border-white/10'}">
+                                推荐
+                             </button>
+                             <button onclick="router.navigate('home', {tab:'inspiration'})" 
+                                class="whitespace-nowrap px-5 py-1.5 rounded-full text-[12px] font-bold border transition-all ${state.currentHomeTab === 'inspiration' ? 'bg-acid-lime text-black border-acid-lime shadow-[0_0_10px_rgba(204,255,0,0.3)]' : 'bg-[#1C1C1E] text-gray-400 border-white/10'}">
+                                灵感
+                             </button>
+                             <div class="w-[1px] h-6 bg-white/10 self-center mx-1"></div>
+                             <button class="whitespace-nowrap px-4 py-1.5 bg-[#1C1C1E] text-white text-[12px] font-bold rounded-full border border-white/10">热门</button>
+                             <button class="whitespace-nowrap px-4 py-1.5 bg-[#1C1C1E] text-white text-[12px] font-bold rounded-full border border-white/10">球鞋</button>
+                             <button class="whitespace-nowrap px-4 py-1.5 bg-[#1C1C1E] text-white text-[12px] font-bold rounded-full border border-white/10">穿搭</button>
+                        </div>
+
+                        <div class="px-4">
+                            ${state.currentHomeTab === 'recommend' ? renderRecommend() : renderInspiration()}
+                        </div>
+                    </div>
+                </div>
+            `,
+
+            collab: () => `
+                <div class="px-4 pt-4 h-full flex flex-col scroll-content overflow-y-auto no-scrollbar pb-32">
+                    <h2 class="text-[32px] font-black italic text-white mb-6 flex items-center gap-2">
+                        <span class="material-symbols-outlined text-acid-lime text-[36px]">hub</span>协作中心
+                    </h2>
+                    <div class="bg-acid-gray border-l-4 border-acid-lime rounded-r-2xl p-5 mb-5 shadow-lg relative overflow-hidden">
+                        <div class="flex justify-between items-center mb-4 border-b border-white/5 pb-2">
+                            <span class="text-[13px] font-bold text-white font-mono tracking-wide">TEAM ROSTER</span>
+                            <span class="text-[10px] bg-acid-lime/20 text-acid-lime px-2 py-0.5 rounded font-bold">4 Online</span>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex justify-between items-center text-xs">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-[#333] border border-white/10 flex items-center justify-center font-bold text-white">C</div>
+                                    <span class="text-gray-200 font-medium">Captain Jack</span>
+                                </div>
+                                <span class="font-mono text-gray-500">XL / #23</span>
+                            </div>
+                            <div class="flex justify-between items-center text-xs">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 rounded-full bg-[#333] border border-white/10 flex items-center justify-center font-bold text-white">S</div>
+                                    <span class="text-gray-200 font-medium">Shooter Li</span>
+                                </div>
+                                <span class="font-mono text-gray-500">L / #10</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-4 grid-rows-2 gap-3 flex-1 max-h-[280px]">
+                        <div class="col-span-1 row-span-1 bg-acid-gray border border-white/5 rounded-2xl flex flex-col items-center justify-center active:scale-95 transition-transform">
+                            <span class="material-symbols-outlined text-gray-400 text-2xl mb-1">view_in_ar</span>
+                            <span class="text-[10px] text-gray-500 font-medium">AR试穿</span>
+                        </div>
+                        <div class="col-span-2 row-span-2 bg-gradient-to-br from-acid-gray to-black border border-acid-lime/20 rounded-2xl flex flex-col items-center justify-center relative overflow-hidden">
+                            <span class="material-symbols-outlined text-[42px] text-acid-lime mb-2">check_circle</span>
+                            <span class="text-sm font-bold text-white">设计确认</span>
+                            <span class="text-[9px] font-mono text-acid-lime mt-1 opacity-80">Waiting...</span>
+                        </div>
+                        <div class="col-span-1 row-span-1 bg-acid-gray border border-white/5 rounded-2xl flex flex-col items-center justify-center active:scale-95 transition-transform">
+                            <span class="material-symbols-outlined text-gray-400 text-2xl mb-1">straighten</span>
+                            <span class="text-[10px] text-gray-500 font-medium">尺码</span>
+                        </div>
+                        <div class="col-span-1 row-span-1 bg-acid-gray border border-white/5 rounded-2xl flex flex-col items-center justify-center active:scale-95 transition-transform">
+                            <span class="material-symbols-outlined text-gray-400 text-2xl mb-1">inventory_2</span>
+                            <span class="text-[10px] text-gray-500 font-medium">包装</span>
+                        </div>
+                         <div class="col-span-1 row-span-1 bg-acid-purple/10 border border-acid-purple/30 rounded-2xl flex flex-col items-center justify-center active:scale-95 transition-transform" onclick="router.navigate('creationMenu')">
+                            <span class="material-symbols-outlined text-acid-purple text-2xl mb-1">smart_toy</span>
+                            <span class="text-[10px] text-acid-purple font-bold">AI助手</span>
+                        </div>
+                    </div>
+                </div>
+            `,
+
+            creationMenu: () => `
+                <div class="h-full flex flex-col bg-acid-black p-6 relative">
+                    <div class="absolute top-2 right-4 z-20">
+                        <button onclick="router.navigate('home')" class="w-9 h-9 rounded-full bg-[#222] flex items-center justify-center text-white"><span class="material-symbols-outlined text-[20px]">close</span></button>
+                    </div>
+                    <div class="mt-8 mb-8">
+                        <h2 class="text-[36px] font-black italic text-white mb-2 leading-[0.9]">开始<br><span class="text-transparent bg-clip-text bg-gradient-to-r from-acid-lime to-white">创作设计</span></h2>
+                        <p class="text-[10px] text-gray-500 font-mono tracking-widest mt-3">CHOOSE YOUR ENGINE //</p>
+                    </div>
+                    <div class="space-y-4 flex-1">
+                        <div onclick="router.navigate('aiDesign')" class="relative h-[190px] bg-acid-gray border border-white/5 rounded-[28px] p-6 flex flex-col justify-between overflow-hidden active:scale-[0.98] transition-all hover:border-acid-purple/50">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-acid-purple/10 blur-[50px] rounded-full"></div>
+                            <div class="z-10">
+                                <span class="bg-acid-purple/20 text-acid-purple px-2 py-0.5 rounded text-[10px] font-bold font-mono border border-acid-purple/30">INTELLIGENT</span>
+                                <h3 class="text-xl font-bold text-white mt-3">AI 智能绘图</h3>
+                                <p class="text-[11px] text-gray-400 mt-2 w-3/4 leading-relaxed">输入关键词，让算法为你生成独一无二的概念设计。</p>
+                            </div>
+                            <div class="flex items-center gap-2 text-acid-purple text-xs font-bold font-mono self-end">
+                                立即生成 <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            </div>
+                        </div>
+                        <div onclick="router.navigate('templateList')" class="relative h-[190px] bg-acid-gray border border-white/5 rounded-[28px] p-6 flex flex-col justify-between overflow-hidden active:scale-[0.98] transition-all hover:border-acid-lime/50">
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-acid-lime/10 blur-[50px] rounded-full"></div>
+                            <div class="z-10">
+                                 <span class="bg-acid-lime/20 text-acid-lime px-2 py-0.5 rounded text-[10px] font-bold font-mono border border-acid-lime/30">CLASSIC</span>
+                                <h3 class="text-xl font-bold text-white mt-3">模版定制设计</h3>
+                                <p class="text-[11px] text-gray-400 mt-2 w-3/4 leading-relaxed">基于标准版型，自由调整配色、图案与细节。</p>
+                            </div>
+                             <div class="flex items-center gap-2 text-acid-lime text-xs font-bold font-mono self-end">
+                                打开编辑器 <span class="material-symbols-outlined text-sm">arrow_forward</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+
+            aiDesign: () => `
+                 <div class="h-full flex flex-col bg-acid-black">
+                    <div class="h-[50px] flex items-center justify-between px-4 bg-acid-black z-20">
+                        <button onclick="router.navigate('creationMenu')" class="text-white flex items-center gap-1"><span class="material-symbols-outlined text-[24px]">chevron_left</span></button>
+                        <span class="font-bold text-white flex items-center gap-2 text-[15px]"><span class="material-symbols-outlined text-acid-purple text-sm">neurology</span> AI 实验室</span>
+                        <div class="w-8"></div>
+                    </div>
+                    <div class="flex-1 p-6 flex flex-col justify-center">
+                        <div class="relative w-full aspect-square bg-[#111] rounded-[32px] border-2 border-dashed border-white/10 flex items-center justify-center overflow-hidden">
+                            <div id="ai-placeholder" class="text-center">
+                                <span class="material-symbols-outlined text-5xl text-gray-700 mb-2">auto_awesome</span>
+                                <p class="text-[10px] text-gray-600 font-mono tracking-wider">WAITING FOR INPUT...</p>
+                            </div>
+                            <img id="generated-image" class="absolute inset-0 w-full h-full object-cover hidden" />
+                            <div id="ai-loader" class="absolute inset-0 bg-black/90 flex flex-col items-center justify-center hidden z-20">
+                                 <div class="w-12 h-12 border-4 border-acid-purple border-t-transparent rounded-full animate-spin mb-4"></div>
+                                 <p class="text-[10px] font-mono text-acid-purple animate-pulse">GENERATING...</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="bg-acid-gray border-t border-white/5 p-6 pb-12 rounded-t-[32px] shadow-2xl">
+                        <div class="mb-4">
+                            <label class="text-[10px] font-bold text-acid-purple font-mono mb-2 block uppercase">描述指令</label>
+                            <div class="bg-black/50 border border-white/10 rounded-xl p-3 focus-within:border-acid-purple transition-colors">
+                                <textarea id="prompt-input" class="w-full h-24 bg-transparent text-white text-sm outline-none resize-none placeholder-gray-700 leading-relaxed" placeholder="例如：黑金配色，中国龙纹理，赛博朋克风格..."></textarea>
+                            </div>
+                        </div>
+                        <button onclick="handleAIGenerate()" class="w-full bg-acid-purple text-white font-bold py-4 rounded-xl shadow-[0_4px_15px_rgba(157,78,221,0.3)] active:scale-[0.98] transition-all flex justify-center items-center gap-2">
+                            <span class="material-symbols-outlined">bolt</span>
+                            <span>生成设计方案</span>
+                        </button>
+                    </div>
+                </div>
+            `,
+
+            templateList: () => `
+                <div class="h-full flex flex-col bg-acid-black">
+                    <div class="h-[50px] flex items-center justify-between px-4 bg-acid-black">
+                        <button onclick="router.navigate('creationMenu')" class="text-white"><span class="material-symbols-outlined text-[24px]">chevron_left</span></button>
+                        <span class="font-bold text-white text-[16px]">选择模版</span>
+                        <button class="text-white"><span class="material-symbols-outlined text-[22px]">filter_list</span></button>
+                    </div>
+                    <div class="px-4 py-3 border-b border-white/5 flex gap-2 overflow-x-auto no-scrollbar">
+                        <button class="px-5 py-1.5 bg-white text-black text-[12px] font-bold rounded-full">全部</button>
+                        <button class="px-5 py-1.5 bg-acid-gray text-white text-[12px] font-bold rounded-full border border-white/10">篮球</button>
+                        <button class="px-5 py-1.5 bg-acid-gray text-white text-[12px] font-bold rounded-full border border-white/10">足球</button>
+                        <button class="px-5 py-1.5 bg-acid-gray text-white text-[12px] font-bold rounded-full border border-white/10">训练</button>
+                    </div>
+                    <div class="flex-1 overflow-y-auto p-4 masonry-grid">
+                        ${state.templates.map(t => `
+                            <div onclick="router.navigate('templateDetail', {id: '${t.id}', name: '${t.name}'})" class="masonry-item bg-acid-gray border border-white/5 rounded-2xl p-2 active:scale-[0.98] transition-all">
+                                <div class="bg-acid-black aspect-square flex items-center justify-center p-4 relative mb-2 rounded-xl">
+                                    <img src="${t.img}" class="w-full h-full object-contain filter invert drop-shadow-lg">
+                                </div>
+                                <div class="px-2 pb-2">
+                                    <h3 class="text-[13px] font-bold text-white">${t.name}</h3>
+                                    <div class="flex gap-1 mt-1.5">
+                                        ${t.tags.map(tag => `<span class="text-[9px] bg-white/5 text-gray-400 px-1.5 py-0.5 rounded">${tag}</span>`).join('')}
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            `,
+
+            templateDetail: (params) => `
+                <div class="h-full flex flex-col bg-[#111]">
+                    <div class="h-[50px] flex items-center justify-between px-4 border-b border-white/10 bg-[#111] z-20">
+                        <button onclick="router.navigate('templateList')" class="text-white"><span class="material-symbols-outlined text-[24px]">chevron_left</span></button>
+                        <div class="text-center">
+                            <span class="block font-bold text-white text-[14px]">${nbEsc(params.name || '定制设计')}</span>
+                            <span class="block text-[9px] text-acid-lime font-mono tracking-wider">EDITOR MODE</span>
+                        </div>
+                        <button onclick="showToast('设计已保存')" class="text-acid-lime font-bold text-[12px]">保存</button>
+                    </div>
+                    <div class="flex-1 relative flex items-center justify-center overflow-hidden">
+                        <div class="relative w-[280px] h-[280px] transition-all duration-300" id="jersey-canvas">
+                             <img src="${state.templates.find(t=>t.id === (params.id || 't1'))?.img}" class="w-full h-full object-contain filter invert z-10 relative drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]">
+                             <div id="jersey-color-layer" class="absolute inset-0 mix-blend-multiply bg-white mask-image-source z-20 opacity-50 pointer-events-none transition-colors duration-300"></div>
+                             <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 pointer-events-none">
+                                <span id="canvas-text" class="text-6xl font-black italic text-black opacity-80 font-mono tracking-tighter">23</span>
+                             </div>
+                        </div>
+                        <div class="absolute top-4 right-4 flex flex-col gap-3">
+                             <button class="w-9 h-9 bg-black/50 backdrop-blur rounded-full text-white flex items-center justify-center border border-white/10"><span class="material-symbols-outlined text-[18px]">undo</span></button>
+                        </div>
+                    </div>
+                    <div class="bg-acid-gray border-t border-white/10 pb-8 rounded-t-[32px] z-20 shadow-xl">
+                        <div class="flex justify-around py-4 border-b border-white/5">
+                            <button class="flex flex-col items-center gap-1 text-acid-lime">
+                                <span class="material-symbols-outlined text-[22px]">palette</span>
+                                <span class="text-[10px] font-medium">配色</span>
+                            </button>
+                            <button class="flex flex-col items-center gap-1 text-gray-500">
+                                <span class="material-symbols-outlined text-[22px]">title</span>
+                                <span class="text-[10px] font-medium">印号</span>
+                            </button>
+                            <button class="flex flex-col items-center gap-1 text-gray-500">
+                                <span class="material-symbols-outlined text-[22px]">texture</span>
+                                <span class="text-[10px] font-medium">纹理</span>
+                            </button>
+                        </div>
+                        <div class="p-5 overflow-x-auto no-scrollbar">
+                             <div class="flex gap-4 px-2">
+                                <button onclick="setJerseyColor('#FFFFFF')" class="w-12 h-12 rounded-full bg-white border-2 border-transparent focus:border-acid-lime shrink-0 shadow-lg"></button>
+                                <button onclick="setJerseyColor('#000000')" class="w-12 h-12 rounded-full bg-black border border-gray-600 focus:border-acid-lime shrink-0 shadow-lg"></button>
+                                <button onclick="setJerseyColor('#CCFF00')" class="w-12 h-12 rounded-full bg-[#CCFF00] border-2 border-transparent focus:border-white shrink-0 shadow-lg"></button>
+                                <button onclick="setJerseyColor('#EF4444')" class="w-12 h-12 rounded-full bg-red-500 border-2 border-transparent focus:border-acid-lime shrink-0 shadow-lg"></button>
+                                <button onclick="setJerseyColor('#3B82F6')" class="w-12 h-12 rounded-full bg-blue-500 border-2 border-transparent focus:border-acid-lime shrink-0 shadow-lg"></button>
+                                <button onclick="setJerseyColor('#9333EA')" class="w-12 h-12 rounded-full bg-purple-600 border-2 border-transparent focus:border-acid-lime shrink-0 shadow-lg"></button>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+
+            detail: () => `
+                <div class="h-full bg-acid-black overflow-y-auto pb-24 relative">
+                    <div class="absolute top-0 left-0 right-0 p-4 flex justify-between items-center z-20 pointer-events-none pt-2">
+                        <button onclick="router.navigate('home')" class="pointer-events-auto w-10 h-10 rounded-full bg-black/40 backdrop-blur flex items-center justify-center transform hover:scale-95 transition-transform border border-white/10"><span class="material-symbols-outlined text-[20px] text-white">arrow_back</span></button>
+                        <button class="pointer-events-auto w-10 h-10 rounded-full bg-black/40 backdrop-blur flex items-center justify-center transform hover:scale-95 transition-transform border border-white/10"><span class="material-symbols-outlined text-[20px] text-white">share</span></button>
+                    </div>
+                    
+                    <div class="w-full h-[480px] relative bg-acid-gray">
+                        <img id="product-image" src="assets/1765264649466.jpg" class="w-full h-full object-cover">
+                        <div class="absolute bottom-6 left-6 bg-acid-lime text-black px-3 py-1 text-[10px] font-bold border border-black transform -rotate-1 shadow-lg rounded-sm">LIMITED EDITION</div>
+                    </div>
+
+                    <div class="px-6 -mt-8 relative z-10">
+                        <div class="flex justify-between items-start mb-6">
+                            <div>
+                                <h1 class="text-[32px] font-black italic text-white leading-tight">CHAMPION PRO</h1>
+                                <p class="text-[11px] text-gray-400 font-mono mt-1">SERIES #7777 // CUSTOM FIT</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="block text-[24px] font-bold font-mono text-acid-lime">¥299</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-6">
+                            <div>
+                                <label class="text-[10px] font-bold text-gray-500 uppercase mb-3 block">选择配色</label>
+                                <div class="flex gap-4">
+                                    <button onclick="changeColor('lime')" class="w-12 h-12 rounded-xl bg-black border-[2px] border-acid-lime shadow-neon"></button>
+                                    <button onclick="changeColor('white')" class="w-12 h-12 rounded-xl bg-white border border-white/20 opacity-50 hover:opacity-100"></button>
+                                    <button onclick="changeColor('purple')" class="w-12 h-12 rounded-xl bg-acid-purple border border-white/20 opacity-50 hover:opacity-100"></button>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-acid-gray p-5 rounded-2xl border border-white/5 mb-10">
+                                <h3 class="text-[12px] font-bold text-white mb-2">产品详情</h3>
+                                <p class="text-[12px] text-gray-400 leading-relaxed font-light">
+                                    专为未来赛场设计。采用反应性霓虹滚边和吸湿排汗的赛博面料，带有反光全息细节。支持AR试穿与链上确权。
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Fixed Action Bar with High Z-Index -->
+                    <div class="absolute bottom-[34px] left-4 right-4 h-[64px] bg-[#1C1C1E]/95 backdrop-blur-md border border-white/10 flex items-center p-2 pl-4 gap-4 rounded-[20px] z-[60] shadow-float">
+                        <button class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-white transition-colors">
+                            <span class="material-symbols-outlined text-[26px]">favorite</span>
+                        </button>
+                        <button onclick="showToast('已加入购物车');" class="flex-1 h-full bg-acid-lime rounded-[16px] flex items-center justify-center text-black font-black italic text-[18px] tracking-wide active:scale-[0.98] transition-transform shadow-lg">
+                            立即购买
+                        </button>
+                    </div>
+                    <div class="h-32"></div>
+                </div>
+            `,
+
+            messages: () => `
+                <div class="h-full pt-4 px-4 bg-acid-black scroll-content overflow-y-auto no-scrollbar pb-32">
+                    <h2 class="text-[28px] font-black italic text-white mb-6 mt-4">MESSAGES</h2>
+                    <div class="bg-acid-gray rounded-2xl p-4 mb-6 border border-white/5 flex justify-between shadow-lg">
+                         <div class="flex flex-col items-center gap-2 w-1/3 border-r border-white/5">
+                            <span class="material-symbols-outlined text-acid-lime text-[22px]">favorite</span>
+                            <span class="text-[10px] text-gray-400 font-bold uppercase">Likes</span>
+                            <span class="text-white font-mono font-bold">128</span>
+                         </div>
+                         <div class="flex flex-col items-center gap-2 w-1/3 border-r border-white/5">
+                            <span class="material-symbols-outlined text-acid-purple text-[22px]">person_add</span>
+                            <span class="text-[10px] text-gray-400 font-bold uppercase">Follows</span>
+                            <span class="text-white font-mono font-bold">42</span>
+                         </div>
+                         <div class="flex flex-col items-center gap-2 w-1/3">
+                            <span class="material-symbols-outlined text-blue-400 text-[22px]">alternate_email</span>
+                            <span class="text-[10px] text-gray-400 font-bold uppercase">Mentions</span>
+                            <span class="text-white font-mono font-bold">12</span>
+                         </div>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div class="flex gap-4 p-4 bg-acid-gray rounded-2xl active:bg-[#222] transition-colors border border-white/5">
+                            <div class="w-10 h-10 rounded-full bg-acid-lime/10 flex items-center justify-center text-acid-lime shrink-0 border border-acid-lime/20">
+                                <span class="material-symbols-outlined text-[20px]">campaign</span>
+                            </div>
+                            <div class="flex-1 overflow-hidden">
+                                <div class="flex justify-between items-center mb-1">
+                                    <h3 class="text-[14px] font-bold text-white">系统通知</h3>
+                                    <span class="text-[10px] text-gray-500 font-mono">12:30</span>
+                                </div>
+                                <p class="text-[12px] text-gray-400 truncate">您的订单 #7777 已通过赛博物流发货。</p>
+                            </div>
+                        </div>
+                         <div class="flex gap-4 p-4 bg-acid-gray rounded-2xl active:bg-[#222] transition-colors border border-white/5">
+                            <div class="w-10 h-10 rounded-full bg-acid-purple/10 flex items-center justify-center text-acid-purple shrink-0 border border-acid-purple/20">
+                                <span class="material-symbols-outlined text-[20px]">smart_toy</span>
+                            </div>
+                            <div class="flex-1 overflow-hidden">
+                                <div class="flex justify-between items-center mb-1">
+                                    <h3 class="text-[14px] font-bold text-white">AI 助手</h3>
+                                    <span class="text-[10px] text-gray-500 font-mono">昨天</span>
+                                </div>
+                                <p class="text-[12px] text-gray-400 truncate">我已经为您生成了3个新的"芝加哥"主题变体。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `,
+
+            profile: () => `
+                <div class="h-full overflow-y-auto pb-24 pt-4 px-4 bg-acid-black scroll-content no-scrollbar pb-32">
+                     <div class="flex items-center gap-5 mb-8 mt-4">
+                        <div class="w-[72px] h-[72px] rounded-full p-0.5 border-2 border-acid-lime relative">
+                            <img src="assets/1765264643148.jpg" class="w-full h-full rounded-full object-cover">
+                            <div class="absolute bottom-0 right-0 w-5 h-5 bg-acid-lime border-2 border-black rounded-full"></div>
+                        </div>
+                        <div>
+                            <h1 class="text-[24px] font-black italic text-white">${nbEsc(state.user.name)}</h1>
+                            <p class="text-[12px] font-mono text-gray-400 mt-0.5">ID: ${state.user.id}</p>
+                            <div class="mt-2 flex gap-2">
+                                <span class="px-2 py-0.5 bg-white/10 rounded text-[10px] text-white font-bold">LVL. 5</span>
+                                <span class="px-2 py-0.5 bg-acid-lime text-black rounded text-[10px] font-bold">PRO</span>
+                            </div>
+                        </div>
+                    </div>
+
+                     <div class="flex justify-between mb-8 px-2 border-t border-b border-white/10 py-5">
+                        <div class="text-center w-1/3 border-r border-white/10">
+                            <span class="block text-[22px] font-mono font-bold text-white">12</span>
+                            <span class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">心愿单</span>
+                        </div>
+                        <div class="text-center w-1/3 border-r border-white/10">
+                            <span class="block text-[22px] font-mono font-bold text-white">05</span>
+                            <span class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">足迹</span>
+                        </div>
+                        <div class="text-center w-1/3">
+                            <span class="block text-[22px] font-mono font-bold text-white">89</span>
+                            <span class="text-[10px] text-gray-500 font-bold uppercase tracking-wider">设计库</span>
+                        </div>
+                    </div>
+
+                     <div class="bg-acid-gray rounded-2xl p-5 mb-4 relative overflow-hidden shadow-lg border border-white/5">
+                        <div class="absolute top-0 left-0 w-1 h-full bg-acid-lime"></div>
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="text-[14px] font-bold text-white">我的订单</span>
+                            <span class="text-[11px] text-gray-500 font-mono">全部 ></span>
+                        </div>
+                        <div class="flex justify-between px-2">
+                            <div class="flex flex-col items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[24px]">account_balance_wallet</span>
+                                <span class="text-[10px] font-bold">待付款</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[24px]">package_2</span>
+                                <span class="text-[10px] font-bold">待发货</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[24px]">local_shipping</span>
+                                <span class="text-[10px] font-bold">待收货</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-2 text-gray-400 hover:text-white transition-colors">
+                                <span class="material-symbols-outlined text-[24px]">rate_review</span>
+                                <span class="text-[10px] font-bold">待评价</span>
+                            </div>
+                        </div>
+                     </div>
+                </div>
+            `
+        };
+
+        // --- Helper Components ---
+        function renderRecommend() {
+            return `
+                <div class="masonry-grid">
+                    ${state.recommendPosts.map(post => `
+                        <div class="masonry-item bg-acid-gray rounded-xl overflow-hidden active:scale-[0.98] transition-transform shadow-lg border border-white/5" onclick="router.navigate('detail')">
+                            ${post.type === 'img' 
+                                ? `<div class="relative w-full">
+                                     <img src="${post.img}" class="w-full h-auto object-cover">
+                                     <div class="absolute top-2 right-2 bg-black/60 backdrop-blur px-1.5 py-0.5 rounded text-[8px] text-white font-mono border border-white/20">IMG</div>
+                                   </div>`
+                                : `<div class="w-full aspect-square ${post.bg} flex items-center justify-center p-4">
+                                     <span class="text-3xl font-black italic text-black leading-none text-center transform -rotate-6">${post.text}</span>
+                                   </div>`
+                            }
+                            <div class="p-3">
+                                <h3 class="text-[13px] font-bold text-white mb-1 leading-tight">${nbEsc(post.title)}</h3>
+                                <div class="flex justify-between items-center mt-2">
+                                    <span class="text-[9px] text-gray-500 font-mono tracking-wider">${nbEsc(post.subtitle)}</span>
+                                    <div class="flex items-center gap-0.5 text-gray-500">
+                                        <span class="material-symbols-outlined text-[12px]">favorite</span>
+                                        <span class="text-[10px] font-mono">${post.likes}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function renderInspiration() {
+            return `
+                <div class="masonry-grid">
+                    <div class="masonry-item bg-acid-lime rounded-xl p-5 flex flex-col justify-between h-[160px] active:scale-[0.98] transition-transform shadow-[0_4px_15px_rgba(204,255,0,0.2)] group cursor-pointer border-2 border-black">
+                        <div class="w-10 h-10 bg-black/10 rounded-full flex items-center justify-center group-hover:bg-black/20 transition-colors">
+                            <span class="material-symbols-outlined text-[24px] text-black">add_photo_alternate</span>
+                        </div>
+                        <div>
+                            <span class="text-[10px] font-bold text-black/60 font-mono block mb-1">UPLOAD</span>
+                            <span class="text-[16px] font-black text-black leading-tight">发布<br>灵感手稿</span>
+                        </div>
+                    </div>
+
+                    ${state.inspirationPosts.map(post => `
+                        <div class="masonry-item bg-acid-gray rounded-xl overflow-hidden active:scale-[0.98] transition-transform border border-white/5" onclick="router.navigate('detail')">
+                            <div class="relative">
+                                <img src="${post.img}" class="w-full h-auto object-cover opacity-90 transition-all duration-500">
+                                 <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black to-transparent p-2 pt-6">
+                                    <h3 class="text-[12px] font-bold text-white drop-shadow-md">${nbEsc(post.title)}</h3>
+                                 </div>
+                            </div>
+                            <div class="p-2 flex justify-between items-center bg-acid-gray">
+                                <span class="text-[9px] text-gray-500 font-mono bg-white/5 px-1.5 py-0.5 rounded">${nbEsc(post.subtitle)}</span>
+                                <span class="material-symbols-outlined text-[14px] text-gray-500">bookmark</span>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        // --- Logic ---
+        function handleAIGenerate() {
+            const input = document.getElementById('prompt-input');
+            const loader = document.getElementById('ai-loader');
+            const img = document.getElementById('generated-image');
+            const placeholder = document.getElementById('ai-placeholder');
+            
+            if (!input.value) return;
+
+            loader.classList.remove('hidden');
+            loader.classList.add('flex');
+            
+            setTimeout(() => {
+                const prompt = encodeURIComponent(input.value + " basketball jersey design vector style");
+                img.src = `/gen?prompt=${prompt}&aspect=1:1`;
+                img.onload = () => {
+                    loader.classList.add('hidden');
+                    loader.classList.remove('flex');
+                    img.classList.remove('hidden');
+                    placeholder.classList.add('hidden');
+                    showToast('方案生成完毕');
+                }
+            }, 1500);
+        }
+
+        function setJerseyColor(color) {
+            const layer = document.getElementById('jersey-color-layer');
+            if (layer) layer.style.backgroundColor = color;
+        }
+
+        function changeColor(color) {
+            const img = document.getElementById('product-image');
+            img.style.filter = 'none';
+            if (color === 'white') img.style.filter = 'grayscale(100%) brightness(120%)';
+            else if (color === 'purple') img.style.filter = 'hue-rotate(240deg) saturate(150%)';
+        }
+
+        function downloadSourceFile() {
+            const btn = document.querySelector('.download-source-btn');
+            if(btn) btn.style.display = 'none'; // Hide button in source
+            const htmlContent = document.documentElement.outerHTML;
+            if(btn) btn.style.display = 'flex'; // Show again
+
+            const blob = new Blob([htmlContent], { type: 'text/html' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'nice-ball-prototype.html';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            router.navigate('login');
+        });
+
+    </script>
+
+
+<script src="assets/catalog.js"></script><script src="features.js"></script>
+</body></html>
