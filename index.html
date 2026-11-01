@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="zh-CN"><head>
     <meta charset="utf-8">
+<script src="layout.js"></script>
+<script src="shared-data.js"></script>
     <meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport">
     <title>NICE BALL | 数字更衣室</title>
 <meta name="theme-color" content="#000000">
@@ -1030,7 +1032,11 @@
 
         // Init
         document.addEventListener('DOMContentLoaded', () => {
-            router.navigate('login');
+            const hashRoute=(location.hash.slice(2)||'').split('?')[0];
+            const map={home:'home',team:'collab',create:'creationMenu',templates:'templateList',editor:'templateDetail',assistant:'aiDesign',messages:'messages',chat:'messages',profile:'profile',orders:'profile',cart:'profile',settings:'profile',detail:'detail'};
+            const q=new URLSearchParams((location.hash.split('?')[1]||''));
+            const screen=map[hashRoute];
+            router.navigate(screen||'login',screen==='templateDetail'&&q.get('id')?{work:q.get('id')}:{});
         });
 
     </script>

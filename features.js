@@ -49,6 +49,7 @@ const nbDefaults = () => ({
   uploads: [],
   read: [],
   lastPrompt: "",
+  web: {},
 });
 let nbData = nbDefaults(),
   nbCurrent = { name: "login", params: {} },
@@ -75,6 +76,7 @@ state.user = nbData.user;
 const nbSave = () => {
   try {
     localStorage.setItem(nbKey, JSON.stringify(nbData));
+    if(window.NBShared) NBShared.saveMobile(nbData);
   } catch {
     showToast("本机存储空间不足，请先导出备份。", "error");
   }
@@ -88,6 +90,7 @@ const nbAllPosts = () => [
   ...state.recommendPosts,
   ...state.inspirationPosts,
   ...nbData.uploads,
+  ...(window.NBShared ? NBShared.extraMobile() : []),
 ];
 state.recommendPosts.forEach(
   (p, i) => (p.category = [["穿搭", "球鞋"], ["热门"], ["热门"], ["热门"]][i]),
@@ -1115,6 +1118,7 @@ const nbActions = {
       `<div class="nb-stack"><p class="nb-small">将清空作品、收藏和模拟订单，恢复原型初始数据。</p>${nbBtn("reset-do", "确认重置本机数据")}${nbBtn("close", "保留数据", "", false)}</div>`,
     ),
   "reset-do": () => {
+    if(window.NBShared) NBShared.reset();
     nbData = nbDefaults();
     state.user = nbData.user;
     nbEditorID = null;
@@ -1215,7 +1219,7 @@ function nbValidBackup(d) {
     !str(d.user.name, 20) ||
     !str(d.user.id) ||
     typeof d.logged !== "boolean" ||
-    !nbValidDesign(d.draft)
+    !nbValidDesign({...d.draft,number:d.draft.number||'0'})
   )
     return false;
   if (
@@ -1477,12 +1481,10 @@ if (!nbValidBackup(nbData)) {
   state.user = nbData.user;
 }
 
-// Optional browser sizing; default is the untouched original phone proportion.
+// A desktop preview of the mobile UI can open the full desktop application.
 const nbWebTools=document.createElement('aside');
-nbWebTools.className='nb-web-tools';
-nbWebTools.setAttribute('aria-label','网页版显示方式');
-nbWebTools.innerHTML='<strong>NICE BALL.</strong><span>显示方式</span><button type="button" data-web-fit="original" aria-pressed="true">原版比例</button><button type="button" data-web-fit="wide" aria-pressed="false">适配窗口</button>';
-document.body.append(nbWebTools);
-function nbSetWebFit(value){const wide=value==='wide';document.body.classList.toggle('nb-web-fit',wide);nbQA('[data-web-fit]').forEach(b=>b.setAttribute('aria-pressed',String((b.dataset.webFit==='wide')===wide)));try{sessionStorage.setItem('nice-ball-web-fit',wide?'wide':'original')}catch{}}
-nbWebTools.addEventListener('click',e=>{const b=e.target.closest('[data-web-fit]');if(b)nbSetWebFit(b.dataset.webFit)});
-try{nbSetWebFit(sessionStorage.getItem('nice-ball-web-fit')||'original')}catch{}
+nbWebTools.className='nb-web-tools';nbWebTools.innerHTML='<strong>NICE BALL.</strong><button type="button" id="nb-open-web">打开电脑网页版</button>';
+document.body.append(nbWebTools);document.querySelector('#nb-open-web').onclick=()=>window.NBLayout?.openWeb();
+const nbRouteToDesktop={home:'home',collab:'team',creationMenu:'create',aiDesign:'assistant',templateList:'templates',templateDetail:'editor',detail:'detail',messages:'messages',profile:'profile',login:'home'};
+if(window.NBLayout){NBLayout.save=nbSave;NBLayout.route=()=>{let hash='#/'+(nbRouteToDesktop[nbCurrent.name]||'home');if(nbCurrent.name==='templateDetail'&&nbEditorID)hash+='?id='+encodeURIComponent(nbEditorID);return hash;};}
+window.addEventListener('storage',e=>{if(e.key===nbKey&&e.newValue){try{const d=JSON.parse(e.newValue);if(nbValidBackup(d)){nbData=d;state.user=nbData.user;nbRefresh();}}catch{}}});
